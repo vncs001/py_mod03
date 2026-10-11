@@ -2,7 +2,8 @@
 import typing
 import random
 
-def gen_event():
+
+def gen_event() -> typing.Generator[tuple[str, str], None, None]:
     names: list[str] = [
             "Thorin", "Balin", "Dwalin",
             "Fili", "Kili", "Oin", "Víli", "Thrainor",
@@ -17,8 +18,8 @@ def gen_event():
             "Mundar", "Thrákur", "Tharkun",
         ]
     actions: list[str] = [
-            "correr", "martelar", "minerar", "beber pinga", 
-            "rir alto", "forjar armas", "escavar túneis", 
+            "correr", "martelar", "minerar", "beber pinga",
+            "rir alto", "forjar armas", "escavar túneis",
             "brandir o machado", "bater com o martelo", "polir ouro",
             "lapidar gemas", "fundir metal", "cantar canções antigas",
             "contar histórias", "desafiar um elfo", "comer carne assada",
@@ -54,7 +55,7 @@ def gen_event():
             "dormir durante a reunião",
         ]
     while True:
-        hero: dict[str, str] =  []
+        hero: list[str, str] = []
         name = names[random.randint(0, len(names) - 1)]
         action = actions[random.randint(0, len(actions) - 1)]
         hero = [name, action]
@@ -65,6 +66,19 @@ if __name__ == "__main__":
     print("=== Game Data Stream Processor ===\n")
     i = 0
     gen = gen_event()
-    while i < 999:
+
+    while i < 1000:
         print(f"Event {i}: {next(gen)[0]} did action {next(gen)[1]}")
         i += 1
+    i = 0
+    coalision: list[tuple[str, str]] = []
+    while i < 10:
+        coalision.append((next(gen)[0], next(gen)[1]))
+        i += 1
+    print(f"Built list of 10 events: {coalision}")
+
+    for dwarfs in list(coalision):
+        indx = random.randrange(len(coalision))
+        print(f"Got event from list {coalision[indx]}")
+        df_rm = coalision.pop(indx)
+        print(f"Remains in list: {coalision}")
